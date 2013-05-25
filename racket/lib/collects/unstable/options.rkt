@@ -1,5 +1,8 @@
-#lang racket
-
+#lang racket/base
+(require racket/list
+         racket/contract/base
+         racket/contract/combinator
+         (for-syntax racket/base))
 
 (provide option/c #;transfer-option exercise-option waive-option tweak-option transfer/c
          has-option? has-option-with-contract?
