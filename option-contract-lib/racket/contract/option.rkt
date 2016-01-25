@@ -438,13 +438,23 @@
        blame #:missing-party neg-party
        val
        (format "expected ~s that satisfies ~s given: ~e" kind inv val))))
+  (define blame+neg-party (cons blame neg-party))
   (cond [(vector? val)
          (let ([vector-wrapper 
                 (λ (wrapper ) 
                   (wrapper
                    ((late-neg-proj blame) val neg-party)
-                   (λ (vec i v) (run-invariant 'vector blame) v)
-                   (λ (vec i v) (vector-set! vec i v) (run-invariant 'vector (blame-swap blame)) v)
+                   (λ (vec i v)
+                     (with-contract-continuation-mark
+                      blame+neg-party
+                      (run-invariant 'vector blame))
+                     v)
+                   (λ (vec i v)
+                     (vector-set! vec i v)
+                     (with-contract-continuation-mark
+                      blame+neg-party
+                      (run-invariant 'vector (blame-swap blame)))
+                     v)
                    impersonator-prop:contracted ctc))])
            (if impersonate? 
                (vector-wrapper impersonate-vector) 
@@ -454,14 +464,28 @@
                 (λ (wrapper) 
                   (wrapper
                    ((late-neg-proj blame) val neg-party)
-                   (λ (h k) (run-invariant 'hash blame) (values k (λ (h k v) v)))
+                   (λ (h k)
+                     (with-contract-continuation-mark
+                      blame+neg-party
+                      (run-invariant 'hash blame))
+                     (values k (λ (h k v) v)))
                    (λ (h k v) 
                      (if (immutable? h) (hash-set h k v) (hash-set! h k v))
-                     (run-invariant 'hash (blame-swap blame)) (values k v))
+                     (with-contract-continuation-mark
+                      blame+neg-party
+                      (run-invariant 'hash (blame-swap blame)))
+                     (values k v))
                    (λ (h k) 
                      (if (immutable? h) (hash-remove h k) (hash-remove! h k))
-                     (run-invariant 'hash (blame-swap blame)) k)
-                   (λ (h k) (run-invariant 'hash blame) k)
+                     (with-contract-continuation-mark
+                      blame+neg-party
+                      (run-invariant 'hash (blame-swap blame)))
+                     k)
+                   (λ (h k)
+                     (with-contract-continuation-mark
+                      blame+neg-party
+                      (run-invariant 'hash blame))
+                     k)
                    impersonator-prop:contracted ctc))])
            (if impersonate? 
                (hash-wrapper impersonate-hash) 
@@ -469,10 +493,18 @@
         [else
          (let* ([s-info (invariant-info-structid ctc)]
                 [base-val ((late-neg-proj blame) val neg-party)]
-                [a-wrap (λ (v f) (run-invariant 'struct blame) f)]
+                [a-wrap (λ (v f)
+                          (with-contract-continuation-mark
+                           blame+neg-party
+                           (run-invariant 'struct blame))
+                          f)]
                 [m-wrap (λ (m)
                           (λ (v f) 
-                            (m base-val f) (run-invariant 'struct (blame-swap blame)) f))]
+                            (m base-val f)
+                            (with-contract-continuation-mark
+                             blame+neg-party
+                             (run-invariant 'struct (blame-swap blame)))
+                            f))]
                 [wrapped-accessors (foldr (λ (first rest) 
                                             (if (procedure? first)
                                                 (list* first a-wrap rest)
@@ -507,16 +539,18 @@
         (define proj (contract-late-neg-projection orig-ctc))
         (define val-acceptor ((contract-late-neg-projection orig-ctc) indy-blame))
         (λ (val neg-party)
-          (check val #f blame neg-party)
-          (unless (invariant (val-acceptor val neg-party))
-            (let ([kind (cond [(vector? val) 'vector]
-                              [(hash? val) 'hash]
-                              [else 'struct])])  
-              (raise-blame-error 
-               blame #:missing-party neg-party
-               val
-               (format "expected ~s that satisfies ~s given: ~e" kind invariant val))))
-          (build-inv-proxy ctc val invariant proj blame indy-blame neg-party impersonate?))))))
+          (with-contract-continuation-mark
+           (cons blame neg-party)
+           (check val #f blame neg-party)
+           (unless (invariant (val-acceptor val neg-party))
+             (let ([kind (cond [(vector? val) 'vector]
+                               [(hash? val) 'hash]
+                               [else 'struct])])  
+               (raise-blame-error 
+                blame #:missing-party neg-party
+                val
+                (format "expected ~s that satisfies ~s given: ~e" kind invariant val))))
+           (build-inv-proxy ctc val invariant proj blame indy-blame neg-party impersonate?)))))))
 
 
 (define-struct (chaperone-invariantc invariant-info) ()
