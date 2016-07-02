@@ -138,7 +138,7 @@
                                                    [vec (option/c
                                                          any/c
                                                          #:flat? #t)]))
-                                         (define vec (vector 1 2 3 4 5)))
+                                         (define vec (vector 1 2 3 4 6)))
                                        (require 'server))
                                       "server"
                                       "an invariant keyword argument (based on presence of other keyword arguments)")
@@ -153,7 +153,7 @@
                                                          any/c
                                                          #:flat? #t
                                                          #:immutable #t)]))
-                                         (define vec (vector 1 2 3 4 5)))
+                                         (define vec (vector 1 2 3 4 7)))
                                        (require 'server))
                                       "server"
                                       "an invariant keyword argument (based on presence of other keyword arguments)")
@@ -237,7 +237,7 @@
                                                          #:invariant values
                                                          #:flat? #t
                                                          #:immutable #t)]))
-                                         (define vec #(1 2 3 4 5)))
+                                         (define vec #(1 2 3 4 8)))
                                        (require 'server)))
 
                                      (test-contract-fail
@@ -250,7 +250,7 @@
                                                          any/c
                                                          #:invariant values
                                                          #:immutable #t)]))
-                                         (define vec (vector 1 2 3 4 5)))
+                                         (define vec (vector 1 2 3 4 9)))
                                        (module client racket
                                          (require racket/contract/option)
                                          (require 'server)
@@ -425,7 +425,7 @@
                                                          any/c
                                                          #:with-contract #t
                                                          #:immutable #t)]))
-                                         (define vec (vector 1 2 3 4 5)))
+                                         (define vec (vector 1 2 3 4 10)))
                                        (require 'server))
                                       "server"
                                       "an invariant keyword argument (based on presence of other keyword arguments)")
@@ -440,7 +440,7 @@
                                                          any/c
                                                          #:with-contract #t
                                                          #:flat? #t)]))
-                                         (define vec (vector 1 2 3 4 5)))
+                                         (define vec (vector 1 2 3 4 11)))
                                        (require 'server))
                                       "server"
                                       "an invariant keyword argument (based on presence of other keyword arguments)")
@@ -456,7 +456,7 @@
                                                          #:flat? #t
                                                          #:with-contract #t
                                                          #:immutable #t)]))
-                                         (define vec (vector 1 2 3 4 5)))
+                                         (define vec (vector 1 2 3 4 12)))
                                        (require 'server))
                                       "server"
                                       "an invariant keyword argument (based on presence of other keyword arguments)")
@@ -545,7 +545,7 @@
                                                          #:invariant values
                                                          #:flat? #t
                                                          #:immutable #t)]))
-                                         (define vec #(1 2 3 4 5)))
+                                         (define vec #(1 2 3 4 13)))
                                        (require 'server)))
 
                                      (test-contract-fail
@@ -559,7 +559,7 @@
                                                          #:with-contract #t
                                                          #:invariant values
                                                          #:immutable #t)]))
-                                         (define vec (vector 1 2 3 4 5)))
+                                         (define vec (vector 1 2 3 4 14)))
                                        (require 'server))
                                       "server")
 
@@ -1343,7 +1343,7 @@
                                          (require 'ctc)
                                          (provide (contract-out
                                                    [vec indy-ctc]))
-                                         (define vec (vector 1 2 3 4 5)))
+                                         (define vec (vector 1 2 3 4 15)))
                                        (require 'server))
                                       "ctc"))
 
@@ -1360,7 +1360,7 @@
                                                    [vec (invariant/c
                                                          any/c
                                                          sorted?)]))
-                                         (define vec (vector 1 2 3 4 5))
+                                         (define vec (vector 1 2 3 4 16))
                                          (define (sorted? vec)
                                            (for/and ([el vec]
                                                      [cel (vector-drop vec 1)])
@@ -1413,7 +1413,7 @@
                                                          any/c
                                                          sorted?
                                                          #:immutable #t)]))
-                                         (define vec (vector 1 2 3 4 5))
+                                         (define vec (vector 1 2 3 4 17))
                                          (define (sorted? vec)
                                            (for/and ([el vec]
                                                      [cel (vector-drop vec 1)])
@@ -1432,7 +1432,7 @@
                                                          any/c
                                                          sorted?
                                                          #:immutable #f)]))
-                                         (define vec #(1 2 3 4 5))
+                                         (define vec #(1 2 3 4 18))
                                          (define (sorted? vec)
                                            (for/and ([el vec]
                                                      [cel (vector-drop vec 1)])
@@ -1452,7 +1452,7 @@
                                                          any/c
                                                          sorted?
                                                          #:immutable #t)]))
-                                         (define vec #(1 2 3 4 5))
+                                         (define vec #(1 2 3 4 19))
                                          (define (sorted? vec)
                                            (for/and ([el vec]
                                                      [cel (vector-drop vec 1)])
@@ -1469,7 +1469,7 @@
                                                          any/c
                                                          sorted?
                                                          #:immutable #f)]))
-                                         (define vec (vector 1 2 3 4 5))
+                                         (define vec (vector 1 2 3 4 20))
                                          (define (sorted? vec)
                                            (for/and ([el vec]
                                                      [cel (vector-drop vec 1)])
@@ -1487,7 +1487,7 @@
                                                          sorted?
                                                          #:immutable #f
                                                          #:flat? #t)]))
-                                         (define vec (vector 1 2 3 4 5))
+                                         (define vec (vector 1 2 3 4 21))
                                          (define (sorted? vec)
                                            (for/and ([el vec]
                                                      [cel (vector-drop vec 1)])
@@ -1505,7 +1505,7 @@
                                                          sorted?
                                                          #:immutable #f
                                                          #:flat? #t)]))
-                                         (define vec (vector 1 2 3 4 5))
+                                         (define vec (vector 1 2 3 4 22))
                                          (define (sorted? vec)
                                            (for/and ([el vec]
                                                      [cel (vector-drop vec 1)])
@@ -1527,7 +1527,7 @@
                                                          sorted?
                                                          #:immutable #f
                                                          #:flat? #f)]))
-                                         (define vec (vector 1 2 3 4 5))
+                                         (define vec (vector 1 2 3 4 23))
                                          (define (sorted? vec)
                                            (for/and ([el vec]
                                                      [cel (vector-drop vec 1)])
@@ -1553,7 +1553,7 @@
                                                  sorted?
                                                  #:immutable #f
                                                  #:flat? #f)]))
-                                         (define vec (vector 1 2 3 4 5))
+                                         (define vec (vector 1 2 3 4 24))
                                          (define (change) (vector-set! vec 1 10))
                                          (define (sorted? vec)
                                            (for/and ([el vec]
