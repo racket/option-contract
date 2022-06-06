@@ -7,3 +7,5 @@
 (define build-deps '("scribble-lib"
                      "racket-doc"))
 (define pkg-authors '(chrdimo robby))
+(define license
+  '(Apache-2.0 OR MIT))

@@ -6,3 +6,5 @@
 (define build-deps '("rackunit-lib"
                      "option-contract-lib"))
 (define pkg-authors '(chrdimo robby))
+(define license
+  '(Apache-2.0 OR MIT))
