@@ -27,8 +27,8 @@ Returns a contract that recognizes vectors or hashes or instances of
 struct @racket[struct-id]. The data structure must match @racket[c] and pass the
 @racket[tester].
 
-When an @racket[option/c] contract is attached to a value, the value is checked against the
-@racket[tester], if @racket[tester] is a predicate. After that,
+When an @racket[option/c] contract is attached to a value, first the contract @racket[c]
+is attached to the value and then the result is checked against @racket[tester], if @racket[tester] is a predicate. After that,
 contract checking is disabled for the value, if @racket[with] is @racket[#f]. If @racket[with]
 is @racket[#t] contract checking for the value remains enabled for @racket[c].
 
