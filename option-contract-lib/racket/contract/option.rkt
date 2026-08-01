@@ -165,8 +165,10 @@
                 (and (not (eq? structid 'none)) (same-type val structid)))
       (if (eq? structid 'none)
           (raise-blame-error blame val '(expected "a procedure or a vector or a hash" given: "~e")
-                             val)  
+                             #:missing-party neg-party
+                             val)
           (raise-blame-error blame val '(expected "a struct of type ~a" given: "~e")
+                             #:missing-party neg-party
                              (fourth structid) val))))
 
 

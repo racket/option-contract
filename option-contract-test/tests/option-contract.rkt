@@ -79,6 +79,17 @@
                          (test-suite "option/c"
 
                                      (test-contract-fail
+                                      "option/c used in a negative position"
+                                      (script
+                                       (module server racket
+                                         (require racket/contract/option)
+                                         (provide (contract-out [i (-> (option/c #:with-contract #t (-> number? number?)) any)]))
+                                         (define (i x) x))
+                                       (require 'server)
+                                       (i #f))
+                                      "top-level")
+
+                                     (test-contract-fail
                                       "failed tester"
                                       (script
                                        (module server racket
